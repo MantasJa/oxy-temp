@@ -14,11 +14,9 @@ class Device
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $user_id = null;
-
-    #[ORM\OneToOne(targetEntity: User::class)]
-    private User $user;
+    #[ORM\ManyToOne(inversedBy: 'devices')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $platform = null;
@@ -27,34 +25,21 @@ class Device
     private ?string $label = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTime $created_at = null;
+    private ?\DateTimeImmutable $created_at = null;
 
-
-    public function getUser()
-    {
-        
-    }
-    
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(int $id): static
+    public function getUser(): ?User
     {
-        $this->id = $id;
-
-        return $this;
+        return $this->user;
     }
 
-    public function getUserId(): ?int
+    public function setUser(?User $user): static
     {
-        return $this->user_id;
-    }
-
-    public function setUserId(int $user_id): static
-    {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }
@@ -83,12 +68,12 @@ class Device
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(?\DateTime $created_at): static
+    public function setCreatedAt(?\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
 
