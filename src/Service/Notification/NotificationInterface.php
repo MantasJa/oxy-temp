@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Notification;
+namespace App\Service\Notification;
 
 use App\Entity\User;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;

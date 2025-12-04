@@ -1,29 +1,29 @@
 <?php
+
 namespace App\Controller;
 
-use App\Notification\NotificationHandler;
-use App\Repository\UserRepository;
+use App\Service\Exception\UserNotFoundException;
+use App\Service\Notification\NotificationHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class NotificationController extends AbstractController
 {
+    /**
+     * @throws UserNotFoundException
+     */
     #[Route('/notifications', name: 'notification', methods: ['GET'])]
-    public function index(Request $request, UserRepository $userRepository, NotificationHandler $notificationHandler): JsonResponse
+    public function index(Request $request, NotificationHandler $notificationHandler): JsonResponse
     {
         $userId = $request->query->get('id');
-        if ($userId == null) {
-            return $this->json(['error' => 'No id provided'], 500);
+        if (!ctype_digit($userId)) {
+            return new JsonResponse(['error' => 'Please provide numeric id'], Response::HTTP_BAD_REQUEST);
         }
 
-        $user = $userRepository->find((int) $request->query->get('id'));
-
-        if (!$user) {
-            return $this->json(['error' => 'User not found'], 404);
-        }
-
-        return $this->json($notificationHandler->get($user));
+        // Handling user notifications. All exception responses are handled by ExceptionListener
+        return $this->json($notificationHandler->get((int) $userId));
     }
 }
