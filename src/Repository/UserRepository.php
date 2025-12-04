@@ -16,16 +16,17 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function findAll(): array
-    {
-        return $this->createQueryBuilder('u')
-        ->select('u.id, u.email, r.label')
-        ->leftJoin('u.devices', 'r')
-        ->orderBy('u.id', 'ASC')
-        ->setMaxResults(10)
-        ->getQuery()
-        ->getResult();
-    }
+//    public function findAll(): array
+//    {
+//        return $this->findAll();
+//        return $this->createQueryBuilder('u')
+//        ->select('u.id, u.email, r.label')
+//        ->leftJoin('u.devices', 'r')
+//        ->orderBy('u.id', 'ASC')
+//        ->setMaxResults(10)
+//        ->getQuery()
+//        ->getResult();
+//    }
 
     //    /**
     //     * @return User[] Returns an array of User objects
