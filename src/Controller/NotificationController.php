@@ -24,6 +24,6 @@ final class NotificationController extends AbstractController
         }
 
         // Handling user notifications. All exception responses are handled by ExceptionListener
-        return $this->json($notificationHandler->get((int) $userId));
+        return $this->json($notificationHandler->getByUserId((int) $userId));
     }
 }
