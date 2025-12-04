@@ -16,40 +16,14 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-//    public function findAll(): array
-//    {
-//        return $this->findAll();
-//        return $this->createQueryBuilder('u')
-//        ->select('u.id, u.email, r.label')
-//        ->leftJoin('u.devices', 'r')
-//        ->orderBy('u.id', 'ASC')
-//        ->setMaxResults(10)
-//        ->getQuery()
-//        ->getResult();
-//    }
-
-    //    /**
-    //     * @return User[] Returns an array of User objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-//            return $this->createQueryBuilder('u')
-//                ->andWhere('u.exampleField = :val')
-//                ->setParameter('val', $value)
-//                ->orderBy('u.id', 'ASC')
-//                ->setMaxResults(10)
-//                ->getQuery()
-//                ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?User
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findInactiveUser(int $id, int $daysInactive = 7): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.id = :id')
+            ->andWhere('u.last_active_at <= :since')
+            ->setParameter('id', $id)
+            ->setParameter('since', new \DateTime("-{$daysInactive} days"))
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

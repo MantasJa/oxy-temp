@@ -20,7 +20,7 @@ class NotificationHandler
      */
     public function getByUserId(int $userId): array
     {
-        $user = $this->userRepository->find($userId);
+        $user = $this->userRepository->findActiveSince($userId);
 
         if (!$user) {
             throw new UserNotFoundException;
