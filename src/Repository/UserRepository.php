@@ -11,12 +11,19 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class UserRepository extends ServiceEntityRepository
 {
+    private const int DEFAULT_DAYS_UNTIL_INACTIVE = 7;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
 
-    public function findInactiveUser(int $id, int $daysInactive = 7): ?User
+    /**
+     * @param int $id
+     * @param int $daysInactive
+     * @return User|null
+     */
+    public function findInactiveUser(int $id, int $daysInactive = self::DEFAULT_DAYS_UNTIL_INACTIVE): ?User
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.id = :id')
