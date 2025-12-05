@@ -9,23 +9,33 @@ use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 #[AsTaggedItem(index: 'android_device_notification', priority: 30)]
 class AndroidDeviceNotification implements NotificationInterface
 {
-    protected const string PLATFORM_LABEL = 'android';
+    private const string PLATFORM_LABEL = 'android';
 
     public function __construct(protected DeviceRepository $deviceRepository)
     {}
 
+    /**
+     * Checking if the user has specific platform
+     *
+     * @param User $user
+     * @return string[]|null
+     */
     public function get(User $user): ?array
     {
-        // check if user has required device
         $device = $this->deviceRepository->userHasDevice($user, self::PLATFORM_LABEL);
         if (!$device) {
-            return [
-                'title' => 'Android: asdfasf asdfasf',
-                'description' => 'asdjf asdfj alsdfja sldfka sdf',
-                'cta' => 'http://www.cta.com/android',
-            ];
+            return $this->getMessage();
         }
 
         return null;
+    }
+
+    private function getMessage(): array
+    {
+        return [
+            'title' => 'Detected Android device',
+            'description' => 'Maybe you should see our other android apps',
+            'cta' => 'https://www.example.com/android-apps',
+        ];
     }
 }

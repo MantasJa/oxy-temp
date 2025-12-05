@@ -9,14 +9,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
-final class ExceptionListener
+final class NotificationsExceptionListener
 {
-    public function __construct(private readonly LoggerInterface $logger) {
+    public function __construct(private readonly LoggerInterface $logger)
+    {
     }
 
     #[AsEventListener]
     public function onExceptionEvent(ExceptionEvent $event): void
     {
+        if (!str_starts_with($event->getRequest()->getPathInfo(), "/notifications")) {
+            return;
+        }
+
+        // C
         $exceptionClass = $event->getThrowable();
         $error = match ($exceptionClass::class) {
             UserNotFoundException::class => $this->getResponse($exceptionClass->getMessage(), Response::HTTP_NOT_FOUND),

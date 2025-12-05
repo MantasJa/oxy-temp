@@ -3,26 +3,33 @@
 namespace App\Service\Notification;
 
 use App\Entity\User;
-use App\Repository\DeviceRepository;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
 
 #[AsTaggedItem(index: 'not_premium_notification', priority: 20)]
-class NotPremiumNotification implements NotificationInterface
+final class NotPremiumNotification implements NotificationInterface
 {
-    public function __construct(protected DeviceRepository $deviceRepository)
-    {}
-
+    /**
+     * Checking if the user has a premium subscription
+     *
+     * @param User $user
+     * @return string[]|null
+     */
     public function get(User $user): ?array
     {
         if (!$user->getIsPremium()) {
-            return [
-                'title' => 'Not premium: asdfasf asdfasf',
-                'description' => 'asdjf asdfj alsdfja sldfka sdf',
-                'cta' => 'http://www.cta.com/spain',
-            ];
+            return $this->getMessage();
         }
 
         return null;
+    }
+
+    private function getMessage(): array
+    {
+        return [
+            'title' => 'Not a premium user',
+            'description' => 'You are still not a premium user',
+            'cta' => 'https://www.example.com/buy-premium',
+        ];
     }
 }

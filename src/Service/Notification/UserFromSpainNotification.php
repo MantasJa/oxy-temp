@@ -8,23 +8,34 @@ use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
 
 #[AsTaggedItem(index: 'user_from_spain_notification', priority: 10)]
-class UserFromSpainNotification implements NotificationInterface
+final class UserFromSpainNotification implements NotificationInterface
 {
-    protected const string COUNTRY_CODE = 'ES';
+    private const string COUNTRY_CODE = 'ES';
 
     public function __construct(protected DeviceRepository $deviceRepository)
     {}
 
+    /**
+     * Checking if the user has specific country code
+     *
+     * @param User $user
+     * @return string[]|null
+     */
     public function get(User $user): ?array
     {
         if ($user->getCountryCode() !== self::COUNTRY_CODE) {
-            return [
-                'title' => 'Spain detected: asdfasf asdfasf',
-                'description' => 'asdjf asdfj alsdfja sldfka sdf',
-                'cta' => 'http://www.cta.com/spain',
-            ];
+            return $this->getMessage();
         }
 
         return null;
+    }
+
+    private function getMessage(): array
+    {
+        return [
+            'title' => 'Detected Spain country',
+            'description' => 'We can see that you are from Spain',
+            'cta' => 'https://www.example.com/offers-in-spain',
+        ];
     }
 }
