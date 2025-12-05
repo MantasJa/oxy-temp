@@ -26,7 +26,6 @@ final class CachedInactiveUserFinder implements InactiveUserFinderInterface
     public function findInactive(int $id): ?User
     {
         $cachedUser = $this->cacheItem->getItem(CacheTags::USER->withId($id));
-        var_dump($cachedUser->isHit());
         if (!$cachedUser->isHit()) {
             $user = $this->userRepository->find($id);
             if ($user) {
