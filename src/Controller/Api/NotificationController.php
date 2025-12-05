@@ -19,7 +19,7 @@ final class NotificationController extends AbstractController
      * @throws UserNotFoundException
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    #[Route('/notifications', name: 'notification', methods: ['GET'])]
+    #[Route('/notifications', name: 'notifications', methods: ['GET'])]
     public function __invoke(Request $request, NotificationHandler $notificationHandler): JsonResponse
     {
         $userId = $request->query->get('id');
