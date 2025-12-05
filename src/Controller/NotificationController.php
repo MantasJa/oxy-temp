@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Service\Exception\UserNotFoundException;
 use App\Service\Notification\NotificationHandler;
@@ -32,20 +33,5 @@ final class NotificationController extends AbstractController
 
         // Handling user notifications. All exception responses are handled by listener
         return $this->json($notificationHandler->getByUserId((int) $userId));
-    }
-
-    #[Route('/test', name: 'test', methods: ['GET'])]
-    public function test(Request $request, EntityManagerInterface $em, UserRepository $userRepository): JsonResponse
-    {
-        $user = $userRepository->find((int) $request->query->get('id'));
-        if (!$user) {
-            throw new UserNotFoundException();
-        }
-        $user->setIsPremium((bool) rand(0, 1));
-
-        $em->persist($user);
-        $em->flush();
-
-        return new JsonResponse(['success' => true]);
     }
 }
