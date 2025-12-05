@@ -23,7 +23,8 @@ class AndroidDeviceNotification implements NotificationInterface
     public function get(User $user): ?array
     {
         $device = $this->deviceRepository->userHasDevice($user, self::PLATFORM_LABEL);
-        if (!$device) {
+
+        if ($device) {
             return $this->getMessage();
         }
 

@@ -3,17 +3,12 @@
 namespace App\Service\Notification;
 
 use App\Entity\User;
-use App\Repository\DeviceRepository;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
-
 
 #[AsTaggedItem(index: 'user_from_spain_notification', priority: 10)]
 final class UserFromSpainNotification implements NotificationInterface
 {
     private const string COUNTRY_CODE = 'ES';
-
-    public function __construct(protected DeviceRepository $deviceRepository)
-    {}
 
     /**
      * Checking if the user has specific country code
@@ -23,7 +18,7 @@ final class UserFromSpainNotification implements NotificationInterface
      */
     public function get(User $user): ?array
     {
-        if ($user->getCountryCode() !== self::COUNTRY_CODE) {
+        if ($user->getCountryCode() == self::COUNTRY_CODE) {
             return $this->getMessage();
         }
 

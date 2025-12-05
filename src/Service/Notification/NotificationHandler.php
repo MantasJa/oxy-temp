@@ -2,17 +2,20 @@
 
 namespace App\Service\Notification;
 
-use App\Repository\UserRepository;
+use App\Repository\InactiveUserFinderInterface;
+use App\Service\CachedInactiveUserFinder;
 use App\Service\Exception\UserNotFoundException;
 use Psr\Cache\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 class NotificationHandler
 {
     public function __construct(
         #[AutowireIterator('app.notification')]
-        protected iterable $handlers,
-        protected UserRepository $userRepository
+        protected iterable                    $handlers,
+        #[Autowire(service: CachedInactiveUserFinder::class)]
+        protected InactiveUserFinderInterface $userRepository,
     ) {
     }
 
@@ -24,7 +27,7 @@ class NotificationHandler
      */
     public function getByUserId(int $userId): array
     {
-        $user = $this->userRepository->findInactiveUser($userId);
+        $user = $this->userRepository->findInactive($userId);
 
         if (!$user) {
             throw new UserNotFoundException;

@@ -41,7 +41,7 @@ final class NotificationController extends AbstractController
         if (!$user) {
             throw new UserNotFoundException();
         }
-        $user->setIsPremium(false);
+        $user->setIsPremium((bool) rand(0, 1));
 
         $em->persist($user);
         $em->flush();

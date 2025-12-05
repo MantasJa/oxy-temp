@@ -5,7 +5,6 @@ namespace App\Service\Notification;
 use App\Entity\User;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
-
 #[AsTaggedItem(index: 'not_premium_notification', priority: 20)]
 final class NotPremiumNotification implements NotificationInterface
 {

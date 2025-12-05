@@ -9,9 +9,9 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<User>
  */
-class UserRepository extends ServiceEntityRepository
+class UserRepository extends ServiceEntityRepository implements InactiveUserFinderInterface
 {
-    private const int DEFAULT_DAYS_UNTIL_INACTIVE = 7;
+    public const int DEFAULT_DAYS_UNTIL_INACTIVE = 7;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -23,7 +23,7 @@ class UserRepository extends ServiceEntityRepository
      * @param int $daysInactive
      * @return User|null
      */
-    public function findInactiveUser(int $id, int $daysInactive = self::DEFAULT_DAYS_UNTIL_INACTIVE): ?User
+    public function findInactive(int $id, int $daysInactive = self::DEFAULT_DAYS_UNTIL_INACTIVE): ?User
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.id = :id')
