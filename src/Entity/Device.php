@@ -6,7 +6,8 @@ use App\Repository\DeviceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DeviceRepository::class)]
-#[ORM\Table(name: '`devices`')]
+#[ORM\Table(name: 'devices')]
+#[ORM\HasLifecycleCallbacks]
 class Device
 {
     #[ORM\Id]
@@ -78,5 +79,13 @@ class Device
         $this->created_at = $created_at;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        if ($this->created_at === null) {
+            $this->created_at = new \DateTimeImmutable();
+        }
     }
 }

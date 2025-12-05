@@ -37,7 +37,7 @@ final class NotificationsExceptionListener
         $event->setResponse($error);
     }
 
-    public function getResponse(string $message, int $statusCode): JsonResponse
+    private function getResponse(string $message, int $statusCode): JsonResponse
     {
         return new JsonResponse(['error' => $message], $statusCode);
     }
