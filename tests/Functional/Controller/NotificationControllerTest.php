@@ -1,6 +1,6 @@
 <?php
 
-namespace Functional;
+namespace Functional\Controller;
 
 use App\Entity\Device;
 use App\Entity\User;
