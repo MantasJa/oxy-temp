@@ -8,7 +8,7 @@ use App\Repository\InactiveUserFinderInterface;
 use App\Util\CacheTags;
 use Psr\Cache\CacheItemPoolInterface;
 
-final class CachedInactiveUserFinder implements InactiveUserFinderInterface
+class UserCacheService
 {
     public function __construct(
         private readonly UserRepository         $userRepository,

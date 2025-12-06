@@ -4,7 +4,7 @@ namespace Unit\Service;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use App\Service\CachedInactiveUserFinder;
+use App\Service\UserCacheService;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemInterface;
@@ -27,7 +27,7 @@ class CachedInactiveUserFinderTest extends TestCase
         $cacheItems = $this->createStub(CacheItemPoolInterface::class);
         $cacheItems->method('getItem')->willReturn($cacheItem);
 
-        $user = (new CachedInactiveUserFinder($this->createStub(UserRepository::class), $cacheItems))
+        $user = (new UserCacheService($this->createStub(UserRepository::class), $cacheItems))
             ->findInactive(1);
 
         $this->assertIsObject($user);
@@ -45,7 +45,7 @@ class CachedInactiveUserFinderTest extends TestCase
         $cacheItems = $this->createStub(CacheItemPoolInterface::class);
         $cacheItems->method('getItem')->willReturn($cacheItem);
 
-        $result = (new CachedInactiveUserFinder($userRepo, $cacheItems))->findInactive(1);
+        $result = (new UserCacheService($userRepo, $cacheItems))->findInactive(1);
 
         $this->assertNull($result);
     }
@@ -65,7 +65,7 @@ class CachedInactiveUserFinderTest extends TestCase
         $cacheItems = $this->createStub(CacheItemPoolInterface::class);
         $cacheItems->method('getItem')->willReturn($cacheItem);
 
-        $result = (new CachedInactiveUserFinder($userRepo, $cacheItems))->findInactive(1);
+        $result = (new UserCacheService($userRepo, $cacheItems))->findInactive(1);
 
         // expecting null because user was active more than default days until inactive
         $this->assertNull($result);
@@ -86,7 +86,7 @@ class CachedInactiveUserFinderTest extends TestCase
         $cacheItems = $this->createStub(CacheItemPoolInterface::class);
         $cacheItems->method('getItem')->willReturn($cacheItem);
 
-        $result = (new CachedInactiveUserFinder($userRepo, $cacheItems))->findInactive(1);
+        $result = (new UserCacheService($userRepo, $cacheItems))->findInactive(1);
 
         // expecting null because user was active more than default days until inactive
         $this->assertNotNull($result);

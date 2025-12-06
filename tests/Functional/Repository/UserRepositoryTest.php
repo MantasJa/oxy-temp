@@ -27,8 +27,7 @@ class UserRepositoryTest extends KernelTestCase
         $this->em->persist($user);
         $this->em->flush();
 
-        $foundUser = $this->repository->findInactive($user->getId());
-        var_dump($user->getId());
+        $foundUser = $this->repository->find($user->getId());
         $this->assertSame($user->getId(), $foundUser->getId());
     }
 
