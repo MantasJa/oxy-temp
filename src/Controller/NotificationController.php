@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Controller\Api;
+namespace App\Controller;
 
-use App\Service\Exception\UserNotFoundException;
 use App\Service\Notification\NotificationHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
