@@ -4,12 +4,10 @@ namespace Functional\Repository;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class UserRepositoryTest extends KernelTestCase
 {
-    private EntityManagerInterface $client;
     private UserRepository $repository;
 
     protected function setUp(): void
@@ -17,8 +15,6 @@ class UserRepositoryTest extends KernelTestCase
         self::bootKernel();
         $this->em = static::getContainer()->get('doctrine')->getManager();
         $this->repository = static::getContainer()->get(UserRepository::class);
-
-        $this->em->getConnection()->beginTransaction();
     }
 
     public function testFindInactiveUser(): void
@@ -38,7 +34,7 @@ class UserRepositoryTest extends KernelTestCase
 
     protected function tearDown(): void
     {
-        $this->em->getConnection()->rollBack();
+        $this->em->getConnection()->close();
         $this->em->close();
 
         parent::tearDown();

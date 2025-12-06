@@ -18,10 +18,9 @@ class CacheTagsTest extends TestCase
     public function testCorrectTag(): void
     {
         $userId = 123;
-        $expectedTag = 'user_123';
         $actualTag = CacheTags::USER->withId($userId);
 
         $this->assertIsString($actualTag);
-        $this->assertSame($expectedTag, $actualTag);
+        $this->assertSame('user_123', $actualTag);
     }
 }

@@ -7,7 +7,6 @@ use App\Repository\UserRepository;
 use App\Repository\InactiveUserFinderInterface;
 use App\Util\CacheTags;
 use Psr\Cache\CacheItemPoolInterface;
-use Psr\Cache\InvalidArgumentException;
 
 final class CachedInactiveUserFinder implements InactiveUserFinderInterface
 {
@@ -20,8 +19,6 @@ final class CachedInactiveUserFinder implements InactiveUserFinderInterface
 
     /**
      * Getting inactive user entity and setting expiration time by calculated inactivity threshold limit
-     *
-     * @throws InvalidArgumentException
      */
     public function findInactive(int $id): ?User
     {
@@ -36,7 +33,8 @@ final class CachedInactiveUserFinder implements InactiveUserFinderInterface
                     $user = null;
                 }
 
-                $cachedUser->expiresAfter($isActive ? null : $inactivityThreshold);
+                // if the user is active, set the cache expiration to the remaining time until the inactivity threshold
+                $cachedUser->expiresAfter($isActive ? $inactivityThreshold : null);
             }
             $cachedUser->set($user);
             $this->cacheItem->save($cachedUser);
@@ -48,10 +46,7 @@ final class CachedInactiveUserFinder implements InactiveUserFinderInterface
     }
 
     /**
-     * Calculate cache time by difference between last activity time and inactivity threshold
-     *
-     * @param User $user
-     * @return int
+     * Calculates cache time from the difference between last activity and inactivity threshold
      */
     private function getInactivityThreshold(User $user): int
     {
@@ -61,3 +56,4 @@ final class CachedInactiveUserFinder implements InactiveUserFinderInterface
         return $user->getLastActiveAt()->getTimestamp() - $inactivityLimit->getTimestamp();
     }
 }
+
