@@ -22,7 +22,7 @@ final class NotificationsExceptionListener
             return;
         }
 
-        // C
+        // Setting custom JSON messages for different exceptions
         $exceptionClass = $event->getThrowable();
         $error = match ($exceptionClass::class) {
             UserNotFoundException::class => $this->getResponse($exceptionClass->getMessage(), Response::HTTP_NOT_FOUND),

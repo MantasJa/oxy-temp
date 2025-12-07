@@ -10,9 +10,6 @@ final class NotPremiumNotification implements NotificationInterface
 {
     /**
      * Checking if the user has a premium subscription
-     *
-     * @param User $user
-     * @return string[]|null
      */
     public function get(User $user): ?array
     {

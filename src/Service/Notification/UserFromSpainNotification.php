@@ -12,9 +12,6 @@ final class UserFromSpainNotification implements NotificationInterface
 
     /**
      * Checking if the user has specific country code
-     *
-     * @param User $user
-     * @return string[]|null
      */
     public function get(User $user): ?array
     {

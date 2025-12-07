@@ -12,7 +12,8 @@ class AndroidDeviceNotification implements NotificationInterface
     private const string PLATFORM_LABEL = 'android';
 
     public function __construct(protected UserDeviceChecker $deviceChecker)
-    {}
+    {
+    }
 
     /**
      * Checking if the user has a specific platform

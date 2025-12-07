@@ -14,6 +14,7 @@ class TestDataFixtures extends Fixture
     {
         $faker = Factory::create();
 
+        // for testing purposes creating new users and attaching new devices
         for ($i = 0; $i < 15; $i++) {
             $user = new User();
             $user->setStatus($faker->randomElement(['active', 'inactive']))

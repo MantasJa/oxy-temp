@@ -13,9 +13,10 @@ class NotificationHandler
 {
     public function __construct(
         #[AutowireIterator('app.notification')]
-        protected iterable         $handlers,
-        protected UserCacheService $userCache,
-    ) {
+        protected iterable                  $handlers,
+        protected readonly UserCacheService $userCache,
+    )
+    {
     }
 
     /**
