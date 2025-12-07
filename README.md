@@ -14,7 +14,7 @@ A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony
 7. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
 8. Run `docker compose down --remove-orphans` to stop the Docker containers.
 
-## Setup Test Data Without Test SQL Dump
+## Setup Test Data Without a Test SQL Dump
 
 1. Run `docker exec -it CONTAINER_NAME ./bin/console doctrine:fixtures:load` (type `yes`)
 
