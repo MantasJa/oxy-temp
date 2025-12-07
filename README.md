@@ -23,8 +23,11 @@ A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony
 The `/notifications` endpoint allows clients to retrieve notifications for a specific user.
 Each request must include the user’s ID. All responses are returned in JSON format. 
 Any exceptions occurring during the request are automatically handled by the `NotificationsExceptionListener`, 
-ensuring consistent error responses. Each type of notification is implemented as a separate service, which is 
-automatically registered in the `NotificationsHandler`.
+ensuring consistent error responses. 
+
+Each type of notification is implemented as a separate service, which is 
+automatically registered in the `NotificationsHandler`. Every notification has a priority, and notifications are returned in order according to the assignment order of the 
+provided notification types, with higher-priority notifications appearing first.
 
 ## Testing
 1. Run `docker exec CONTAINER_NAME composer install --dev`
