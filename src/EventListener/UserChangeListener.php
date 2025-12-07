@@ -9,16 +9,19 @@ use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Contracts\Cache\CacheInterface;
 
-#[AsEntityListener(event: Events::postPersist, method: 'clearCache', entity: User::class)]
-#[AsEntityListener(event: Events::postUpdate, method: 'clearCache', entity: User::class)]
-final class UserChangeListerner
+#[AsEntityListener(event: Events::postRemove, entity: self::ENTITY)]
+#[AsEntityListener(event: Events::postPersist, entity: self::ENTITY)]
+#[AsEntityListener(event: Events::postUpdate, entity: self::ENTITY)]
+final class UserChangeListener
 {
+    private const string ENTITY = User::class;
     public function __construct(protected readonly CacheInterface $cache)
     {
     }
 
-    public function clearCache(User $user, LifecycleEventArgs $event): void
+    public function __invoke(User $user, LifecycleEventArgs $event): void
     {
+
         $this->cache->delete(CacheTags::USER->withId($user->getId()));
     }
 }

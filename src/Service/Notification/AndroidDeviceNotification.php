@@ -3,7 +3,7 @@
 namespace App\Service\Notification;
 
 use App\Entity\User;
-use App\Repository\DeviceRepository;
+use App\Service\UserDeviceChecker;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
 #[AsTaggedItem(index: 'android_device_notification', priority: 30)]
@@ -11,24 +11,17 @@ class AndroidDeviceNotification implements NotificationInterface
 {
     private const string PLATFORM_LABEL = 'android';
 
-    public function __construct(protected DeviceRepository $deviceRepository)
+    public function __construct(protected UserDeviceChecker $deviceChecker)
     {}
 
     /**
-     * Checking if the user has specific platform
-     *
-     * @param User $user
-     * @return string[]|null
+     * Checking if the user has a specific platform
      */
     public function get(User $user): ?array
     {
-        $device = $this->deviceRepository->userHasDevice($user, self::PLATFORM_LABEL);
-
-        if ($device) {
-            return $this->getMessage();
-        }
-
-        return null;
+        return $this->deviceChecker->hasDevice($user, self::PLATFORM_LABEL)
+            ? $this->getMessage()
+            : null;
     }
 
     private function getMessage(): array

@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use App\Repository\InactiveUserFinderInterface;
 use App\Util\CacheTags;
 use Psr\Cache\CacheItemPoolInterface;
 

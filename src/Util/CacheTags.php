@@ -6,14 +6,16 @@ Enum CacheTags: string
 {
     case USER = 'user_';
 
+    case USER_DEVICE_SEARCH_KEY = 'user_device_search_';
+
+    case USER_DEVICES_SEARCH_TAG = 'user_devices_';
+
+
     /**
-     * Creates cache tag with a specific id
-     *
-     * @param int $id
-     * @return string
+     * Creates cache tag with a specific param
      */
-    public function withId(int $id): string
+    public function withId(int|array|string $param): string
     {
-        return $this->value . $id;
+        return $this->value . (is_array($param) ? join("_", $param) : $param);
     }
 }

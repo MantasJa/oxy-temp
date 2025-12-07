@@ -7,30 +7,33 @@ use App\Entity\Device;
 use App\Entity\User;
 use App\Repository\DeviceRepository;
 use App\Service\Notification\AndroidDeviceNotification;
+use App\Service\UserDeviceChecker;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class AndroidDeviceNotificationTest extends TestCase
 {
-    public function testNonAndroidUser(): void
+
+    public static function androidNotificationDataProvider(): array
     {
-        $deviceRepo = $this->createStub(DeviceRepository::class);
-        $deviceRepo->method('userHasDevice')
-            ->willReturn(null);
-       $result = (new AndroidDeviceNotification($deviceRepo))->get(new User());
-       $this->assertNull($result);
+        return [
+            [true, true],
+            [false, false],
+        ];
     }
 
-    public function testAndroidUser(): void
+    #[DataProvider('androidNotificationDataProvider')]
+    public function testAndroidNotification(bool $userHasDevice, bool $hasNotification): void
     {
-        $device =  (new Device())
-            ->setCreatedAt(new \DateTimeImmutable())
-            ->setLabel('test')
-            ->setPlatform('android');
+        $userDeviceChecker = $this->createStub(UserDeviceChecker::class);
+        $userDeviceChecker->method('hasDevice')
+            ->willReturn($userHasDevice);
+        $result = (new AndroidDeviceNotification($userDeviceChecker))->get(new User());
 
-        $deviceRepo = $this->createStub(DeviceRepository::class);
-        $deviceRepo->method('userHasDevice')
-            ->willReturn($device);
-       $result = (new AndroidDeviceNotification($deviceRepo))->get(new User());
-       $this->assertArrayHasKey('title', $result);
+        if ($hasNotification) {
+            $this->assertArrayHasKey('title', $result);
+        } else {
+            $this->assertNull($result);
+        }
     }
 }

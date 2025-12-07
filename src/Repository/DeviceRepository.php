@@ -22,7 +22,7 @@ class DeviceRepository extends ServiceEntityRepository
      * @param string $platform
      * @return Device|null
      */
-        public function userHasDevice(User $user, string $platform): ?Device
+        public function findOneByUserAndName(User $user, string $platform): ?Device
         {
             return $this->createQueryBuilder('d')
                 ->andWhere('d.user = :user')
