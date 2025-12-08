@@ -7,9 +7,6 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<Device>
- */
 class DeviceRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -18,9 +15,7 @@ class DeviceRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param User $user
-     * @param string $platform
-     * @return Device|null
+     * Return only one selected device by platform for the user
      */
         public function findOneByUserAndName(User $user, string $platform): ?Device
         {
