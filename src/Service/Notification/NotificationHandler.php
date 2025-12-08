@@ -18,13 +18,7 @@ class NotificationHandler
     )
     {
     }
-
-    /**
-     * @param int $userId
-     * @return array
-     * @throws UserNotFoundException
-     * @throws InvalidArgumentException
-     */
+    
     public function getByUserId(int $userId): array
     {
         $user = $this->userCache->findInactive($userId);
